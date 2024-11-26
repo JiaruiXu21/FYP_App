@@ -1,12 +1,16 @@
 from flask import Blueprint, render_template, request
 from .forms import WatchRecommendationForm
 import pandas as pd
+import os
 
 main = Blueprint('main', __name__)
 
 # Load datasets
-purchase_data = pd.read_excel('/Users/harryxu/FYP_App/data/Purchase records.xlsx', sheet_name='records (5)')
-watch_data = pd.read_excel('/Users/harryxu/FYP_App/data/Watch Collections.xlsx', sheet_name='Sheet1')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+purchase_data_path = os.path.join(BASE_DIR, '/Users/harryxu/FYP_App/data/Purchase records.xlsx')
+watch_data_path = os.path.join(BASE_DIR, '/Users/harryxu/FYP_App/data/Watch Collections.xlsx')
+purchase_data = pd.read_excel(purchase_data_path, sheet_name='records (5)')
+watch_data = pd.read_excel(watch_data_path, sheet_name='Sheet1')
 
 purchase_data = purchase_data.dropna()
 # watch_data = watch_data.dropna()
@@ -39,6 +43,6 @@ def home():
 
         print(list(recommendations.columns))
         print("recommendations:", recommendations)
-        return render_template('result.html', recommendations=recommendations)
+        return render_template('/Users/harryxu/FYP_App/app/templates/result.html', recommendations=recommendations)
 
-    return render_template('form.html', form=form)
+    return render_template('/Users/harryxu/FYP_App/app/templates/form.html', form=form)
